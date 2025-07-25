@@ -1,91 +1,59 @@
-[gd_scene load_steps=6 format=3 uid="uid://cnpss81rdulih"]
+[gd_scene load_steps=5 format=3 uid="uid://dvjrq66v54urr"]
 
-[ext_resource type="Script" uid="uid://cjbqlir3qtkwv" path="res://scenes/_game_scene/levels/level.gd" id="1_623lg"]
-[ext_resource type="Script" uid="uid://1nf36h0gms3q" path="res://addons/maaacks_game_template/base/scripts/capture_focus.gd" id="2_sycfm"]
-[ext_resource type="Script" uid="uid://dquaj8ki8of4n" path="res://scenes/_game_scene/input_display_label.gd" id="3_pmyid"]
-[ext_resource type="Script" uid="uid://ck7cdjnnkm4aq" path="res://scenes/_game_scene/tutorial_manager.gd" id="4_bsimd"]
-[ext_resource type="PackedScene" uid="uid://b8vsxuuyong8g" path="res://scenes/_game_scene/tutorials/tutorial_1.tscn" id="5_fmabn"]
+[ext_resource type="PackedScene" uid="uid://byv5mepgohgtm" path="res://assets/train-station-godot/trainstation.tscn" id="1_4iax2"]
+[ext_resource type="Script" uid="uid://doppr7dq0lko8" path="res://scenes/_game_scene/levels/level_1.gd" id="1_b471h"]
 
-[node name="Level1" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_623lg")
-next_level_path = "res://scenes/_game_scene/levels/level_2.tscn"
+[sub_resource type="Curve3D" id="Curve3D_4iax2"]
+bake_interval = 10.0
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4.5, 0, 0, 0, 0, 0, 0, 0, 0, 16.666, -7.3, 0, 0, 0, 0, 0, 0, 0, 20, -7.3, 0),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
 
-[node name="BackgroundColor" type="ColorRect" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
+[sub_resource type="BoxShape3D" id="BoxShape3D_4iax2"]
+size = Vector3(23, 2, 3.5)
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 32
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_b471h")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 16
+[node name="PlayerCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, -5, 17.5, 12.5)
+top_level = true
+fov = 60.0
+far = 30.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 32
-script = ExtResource("2_sycfm")
+[node name="Environment" type="Node3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
-[node name="LoseButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Lose"
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, -0.206272, 0.978495, 0, -0.978495, -0.206272, 0, 5.63096, 0)
+light_energy = 0.7
 
-[node name="WinButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Win"
+[node name="Trainstation" parent="Environment" instance=ExtResource("1_4iax2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.14539, -0.224273)
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
+[node name="NpcNavigation" type="Node3D" parent="."]
 
-[node name="TutorialButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-text = "Tutorial"
+[node name="EntrancePath" type="Path3D" parent="NpcNavigation"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.2218, 10.0024, 2.5)
+curve = SubResource("Curve3D_4iax2")
 
-[node name="InputDisplayLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-horizontal_alignment = 1
-script = ExtResource("3_pmyid")
+[node name="WaitingArea" type="Area3D" parent="NpcNavigation"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, 6)
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-text = "Change Level Color: "
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NpcNavigation/WaitingArea"]
+shape = SubResource("BoxShape3D_4iax2")
 
-[node name="ColorPickerButton" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Change Color"
+[node name="NpcContainer" type="Node3D" parent="."]
 
-[node name="TutorialManager" type="Node" parent="."]
-unique_name_in_owner = true
-script = ExtResource("4_bsimd")
-tutorial_scenes = Array[PackedScene]([ExtResource("5_fmabn")])
+[node name="DebugUI" type="CanvasLayer" parent="."]
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/LoseButton" to="." method="_on_lose_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/WinButton" to="." method="_on_win_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/TutorialButton" to="." method="_on_tutorial_button_pressed"]
-[connection signal="color_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/ColorPickerButton" to="." method="_on_color_picker_button_color_changed"]
+[node name="spawn NPC" type="Button" parent="DebugUI"]
+offset_left = 957.0
+offset_top = 27.0
+offset_right = 1256.0
+offset_bottom = 118.0
+text = "spawn NPC"
+
+[connection signal="pressed" from="DebugUI/spawn NPC" to="." method="_on_spawn_npc_pressed"]

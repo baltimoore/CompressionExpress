@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://de2nuuus4mmrj"]
+
+[ext_resource type="PackedScene" uid="uid://bm86ek67kmyjd" path="res://assets/animated-characters-3/Model/characterMedium.fbx" id="1_5lm7m"]
+[ext_resource type="Script" uid="uid://w55hgs23pyfk" path="res://scenes/_game_scene/characters/npc.gd" id="1_86e34"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_b7j6f"]
+height = 4.0
+
+[node name="Node3D" type="CharacterBody3D"]
+script = ExtResource("1_86e34")
+
+[node name="characterMedium" parent="." instance=ExtResource("1_5lm7m")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.79088, 0)
+shape = SubResource("CapsuleShape3D_b7j6f")
