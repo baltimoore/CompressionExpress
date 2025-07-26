@@ -10,6 +10,21 @@
 	Author: Andrea Calabró  
 	Source: [godotengine.org : press](https://godotengine.org/press/)  
 	License: [CC BY 4.0 International](https://github.com/godotengine/godot/blob/master/LOGO_LICENSE.txt) 
+	
+	#### Kenney's Animated Characters 3
+	Author: Kenney
+	Source: [itch.io](https://kenney-assets.itch.io/animated-characters-3)
+	License: [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)
+	
+	#### Train Station Godot
+	Author: nbe1233
+	Source: [itch.io](https://nbe1233.itch.io/train-station-godot)
+	License: Unknown
+	
+	#### Modular Train Pack
+	Author: Quaternius
+	Source: [https://quaternius.com](https://quaternius.com/packs/modulartrain.html)
+	License: [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)
 
 ## Tools
 	#### Godot

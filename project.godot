@@ -39,9 +39,13 @@ project/assembly_name="CompressionExpress"
 
 enabled=PackedStringArray("res://addons/maaacks_game_template/plugin.cfg")
 
+[filesystem]
+
+import/fbx2gltf/enabled=false
+
 [gui]
 
-theme/custom="uid://2p6glpubmhup"
+theme/custom="uid://chb8n2mtmg5wy"
 common/drop_mouse_on_gui_input_disabled=true
 
 [input]
