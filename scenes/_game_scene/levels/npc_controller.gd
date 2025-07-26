@@ -4,8 +4,8 @@ extends Node3D
 @onready var waiting_area = $"WaitingArea"
 @onready var dragging_area = $"DraggingArea"
 
-const LAYER_MASK_DRAGGABLE_NPC = 2	#Assuming draggable NPCs are in layer 2
-const LAYER_MASK_DRAGGING_AREA = 1 << 3 	#Assuming dragging area is in layer 4
+const LAYER_MASK_NPC = 1  #Assuming draggable NPCs are in layer 2
+const LAYER_MASK_DRAGGING_AREA = 4  #Assuming dragging area is in layer 4
 
 var held_npc: CharacterBody3D = null
 
@@ -28,7 +28,7 @@ func _raycast_to_npc(mouse_pos : Vector2):
 	var npc_query = PhysicsRayQueryParameters3D.new()
 	npc_query.from = from
 	npc_query.to = to
-	npc_query.collision_mask = LAYER_MASK_DRAGGABLE_NPC
+	npc_query.collision_mask = LAYER_MASK_NPC
 	
 	# Check if the ray pierces an NPC
 	return space_state.intersect_ray(npc_query)

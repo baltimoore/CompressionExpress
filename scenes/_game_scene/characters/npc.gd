@@ -6,9 +6,7 @@ extends CharacterBody3D
 
 # pathfinding variables
 var path_follow : PathFollow3D
-var in_waiting_area = false
-var waiting_position_distance: Vector3
-var at_position = false
+var location_vector: Vector3
 
 # stuckage variables
 const STUCK_THRESHOLD_TIME := 0.5  # seconds
@@ -20,26 +18,26 @@ var stuck_timer := 0.0
 var last_push_time := 0.0
 const PUSH_COOLDOWN := 0.1
 
-# deagging variables
+# dragging variables
 var is_dragged := false
 
-signal reached_waiting_area(npc)
-signal reached_waiting_position(npc_position)
+signal npc_path_completed(npc)
+signal npc_arrived_at_location(npc_position)
 
 func _physics_process(delta):
-		# While dragging, don't move automatically
+	# While being dragged, don't move automatically
 	if is_dragged:
 		velocity = Vector3.ZERO
-	
 	# Just spawned, moving along the path
-	elif path_follow && not in_waiting_area:
-		_move_along_entry_path(delta)
+	elif path_follow && not path_follow.progress == 100:
+		_move_along_path(delta)
 	# Entered waiting area, now going to waiting spot
-	elif in_waiting_area && waiting_position_distance != Vector3.ZERO:
-		_move_to_waiting_spot(delta)
+	elif path_follow == null && location_vector != Vector3.ZERO:
+		_move_to_location(delta)
+	
 	# Clamp position so NPC stays inside waiting area
-	elif bounding_box:
-		global_position = _bind_position_within_bounding_box(global_position)
+	if bounding_box and not is_dragged:
+		global_position = _bind_position_within_bounding_box()
 	
 	# NPC has finalized their position; time to be shuffled around
 	last_push_time = max(0.0, last_push_time - delta)
@@ -52,27 +50,23 @@ func _physics_process(delta):
 #### ### ### ### ### ### ###
 
 # Function to handle path following until NPC reaches the waiting area
-func _move_along_entry_path(delta):
+func _move_along_path(delta):
 	path_follow.progress += speed * delta
 	global_position = path_follow.global_position
 	
 	# Check if we reached the end of the path
 	if path_follow.progress_ratio >= 0.95:
 		path_follow.progress_ratio = 1.0
-		in_waiting_area = true
-		emit_signal("reached_waiting_area", self)
+		emit_signal("npc_path_completed", self)
 
 # Function to handle movement toward the assigned waiting position
-func _move_to_waiting_spot(delta):
-	# move NPC to draggable npc layer
-	self.collision_layer = 2
-	
+func _move_to_location(delta):	
 	# try moving NPC
-	var dir = (waiting_position_distance - global_position).normalized()
+	var dir = (location_vector - global_position).normalized()
 	velocity = dir * speed
 	
 	# if NPC is close enough, he's close enough
-	if global_position.distance_to(waiting_position_distance) < 0.5:
+	if global_position.distance_to(location_vector) < 0.5:
 		_arrived_at_waiting_spot()
 	# if NPC hasn't moved from his current spot at all,
 	# let's make the current spot his permanent resting spot
@@ -88,23 +82,26 @@ func _move_to_waiting_spot(delta):
 # NPC at final position and emits signal
 func _arrived_at_waiting_spot():
 	# Stop movement
-	waiting_position_distance = Vector3.ZERO  
+	location_vector = Vector3.ZERO  
 	velocity = Vector3.ZERO
-	emit_signal("reached_waiting_position", self.global_position)
+	emit_signal("npc_arrived_at_location", self.global_position)
 
-func _bind_position_within_bounding_box(pos: Vector3) -> Vector3:
+# NPC containment within area
+func _bind_position_within_bounding_box() -> Vector3:
 	var shape = bounding_box.shape
 	var half_size = shape.size * 0.5
 	var center = bounding_box.global_transform.origin
 	
 	# Clamp each axis inside the box bounds
-	var clamped_x = clamp(pos.x, center.x - half_size.x, center.x + half_size.x)
-	var clamped_y = clamp(pos.y, center.y - half_size.y, center.y + half_size.y)
-	var clamped_z = clamp(pos.z, center.z - half_size.z, center.z + half_size.z)
+	var clamped_x = clamp(global_position.x, center.x - half_size.x, center.x + half_size.x)
+	var clamped_y = clamp(global_position.y, center.y - half_size.y, center.y + half_size.y)
+	var clamped_z = clamp(global_position.z, center.z - half_size.z, center.z + half_size.z)
 	
 	return Vector3(clamped_x, clamped_y, clamped_z)
 
-# pushing movement logic
+#### ### ### ### ### ### ###
+##  NPC shoving logic
+#### ### ### ### ### ### ###
 func _on_personal_space_body_entered(body):
 	if body != self and body is CharacterBody3D and last_push_time <= 0:
 		var push_dir = (global_position - body.global_position).normalized()
@@ -114,15 +111,12 @@ func _on_personal_space_body_entered(body):
 #### ### ### ### ### ### ###
 ##  NPC draggability functions
 #### ### ### ### ### ### ###
-
 func start_drag():
 	is_dragged = true
-	in_waiting_area = false
 	velocity = Vector3.ZERO
 	# Optionally, disable NavigationAgent3D path following to stop movement
 	nav.set_enabled(false)
 
 func stop_drag():
 	is_dragged = false
-	in_waiting_area = true
 	nav.set_enabled(true)

@@ -10,7 +10,7 @@ height = 4.0
 radius = 1.0
 height = 4.0
 
-[node name="CharacterBody3D" type="CharacterBody3D"]
+[node name="NPC" type="CharacterBody3D"]
 script = ExtResource("1_86e34")
 
 [node name="characterMedium" parent="." instance=ExtResource("1_5lm7m")]
