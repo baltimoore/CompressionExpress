@@ -29,3 +29,6 @@ assets/kenney_input-prompts/*
 !assets/kenney_input-prompts/.gitkeep
 addons/maaacks_game_template/media/*
 addons/maaacks_game_template/assets/input_icons/*
+
+# itch asset import specific
+**/.itch/

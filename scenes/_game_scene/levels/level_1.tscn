@@ -6,13 +6,13 @@
 [sub_resource type="Curve3D" id="Curve3D_4iax2"]
 bake_interval = 10.0
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4.5, 0, 0, 0, 0, 0, 0, 0, 0, 16.666, -7.3, 0, 0, 0, 0, 0, 0, 0, 20, -7.3, 0),
-"tilts": PackedFloat32Array(0, 0, 0, 0)
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4.5, 0, 0, 0, 0, 0, 0, 0, 0, 16.666, -7.3, 0, 0, 0, 0, 0, 0, 0, 20, -7.3, 0, 0, 0, 0, 0, 0, 0, 20, -7.3, 2),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0)
 }
-point_count = 4
+point_count = 5
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_4iax2"]
-size = Vector3(23, 2, 3.5)
+[sub_resource type="BoxShape3D" id="BoxShape3D_waxwv"]
+size = Vector3(22.5, 1, 4)
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_b471h")
@@ -43,7 +43,7 @@ curve = SubResource("Curve3D_4iax2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, 6)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NpcNavigation/WaitingArea"]
-shape = SubResource("BoxShape3D_4iax2")
+shape = SubResource("BoxShape3D_waxwv")
 
 [node name="NpcContainer" type="Node3D" parent="."]
 

@@ -13,8 +13,8 @@ func spawn_npc():
 	path_follow.progress = 0
 	
 	var npc = npc_scene.instantiate()
-	#npc.global_position = path_follow.global_position
 	npc.path_follow = path_follow
+	npc.bounding_box = $NpcNavigation/WaitingArea/CollisionShape3D
 	$NpcContainer.add_child(npc)
 	
 	npc.connect("reached_waiting_area", Callable(self, "_on_reached_waiting_area"))
@@ -49,10 +49,14 @@ func pick_random_free_spot():
 		# Evaluating whether the picked position isn't too close to someone already
 		if is_position_free(candidate_position):
 			return candidate_position
+	
+	# since we got here, apparently there were no correctly guessed free spots
+	# defaulting to the center of the area then
+	return area_location
 
 func is_position_free(pos : Vector3) -> bool:
 	for p in occupied_positions:
-		if p.distance_to(pos) < 0.3: # width of NPC + some space
+		if p.distance_to(pos) < 0.5: # width of NPC collision box + some space
 			# sorry, someone is already staying there
 			return false
 	# we went through everything, and seems like nobody is standing there (yet)!
