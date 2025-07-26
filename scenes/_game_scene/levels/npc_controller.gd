@@ -33,14 +33,13 @@ func _raycast_to_npc(mouse_pos : Vector2):
 	# Check if the ray pierces an NPC
 	var npc_response = space_state.intersect_ray(npc_query)
 	if npc_response.has("collider") and npc_response.collider.is_in_group("draggable_npc"):
-		print("NPC query response", npc_response)
+		# print("NPC query response", npc_response)
 		return npc_response
 	else:
 		return null
 
 func _attempt_pick_or_drag(mouse_pos: Vector2):
 	var npc_raycast = _raycast_to_npc(mouse_pos)
-	print("NPC query response", npc_raycast)
 	
 	if npc_raycast:
 		held_npc = npc_raycast.collider
@@ -56,6 +55,22 @@ func _update_position(mouse_pos: Vector2):
 		held_npc.global_position = new_location
 
 func _release_npc():
+	# check if there is a train loaded
+	if %Traincar.current_train_car:
+		# check if the npc is above the traincar container
+		var train_compartment: Area3D = %Traincar.current_train_car.get_node("TraincarArea")
+		var train_compartment_container : CollisionShape3D = train_compartment.find_child("Container")
+
+		var npc_relative_to_train_compartment = train_compartment_container.to_local(held_npc.global_position) 
+		var within_x : bool = abs(npc_relative_to_train_compartment.x) <= train_compartment_container.shape.size.x / 2
+		
+		if held_npc.global_position.z > 11 and within_x:
+			print("npc is fed to the train")
+			held_npc.reparent(train_compartment)
+			held_npc.bounding_box = train_compartment_container
+			return
+	
+	# by default, throw NPC back to the waiting area
 	held_npc.reparent(waiting_area)
 	held_npc.bounding_box = waiting_area.find_child("Container", false)
 	held_npc = null

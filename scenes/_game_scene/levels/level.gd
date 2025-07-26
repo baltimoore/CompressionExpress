@@ -35,12 +35,12 @@ func _on_entrance_path_completed(npc):
 	occupied_positions.append(free_spot)
 	print("Located free target position: ", free_spot)
 	npc.location_vector = free_spot
-	# await their arrival at their waiting spot
-	npc.connect("npc_arrived_at_location", Callable(self, "_on_reached_waiting_position"))
-
-func _on_reached_waiting_position(npc_position):
-	# do we even need this?
-	pass
+#	# await their arrival at their waiting spot
+#	npc.connect("npc_arrived_at_location", Callable(self, "_on_reached_waiting_position"))
+#
+#func _on_reached_waiting_position(npc_position):
+#	# do we even need this?
+#	pass
 
 
 
@@ -51,7 +51,7 @@ func _on_spawn_npc_pressed() -> void:
 	spawn_npc()
 
 func _on_spawn_traincar_pressed() -> void:
-	$Traincar.spawn_traincar()
+	%Traincar.spawn_traincar()
 
 func _on_void_exit_body_exited(body: Node3D) -> void:
 	print("void exited")

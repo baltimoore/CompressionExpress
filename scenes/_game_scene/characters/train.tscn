@@ -31,7 +31,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
 [node name="Locomotive_PassengerWagon" parent="Meshes" instance=ExtResource("2_h15sm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 0)
 
-[node name="Container" type="CollisionShape3D" parent="."]
+[node name="TraincarArea" type="Area3D" parent="."]
+unique_name_in_owner = true
+
+[node name="Container" type="CollisionShape3D" parent="TraincarArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 2.5, 0)
 shape = SubResource("BoxShape3D_w1p7y")
 

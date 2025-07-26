@@ -1,8 +1,5 @@
 extends Node3D
 
-@onready var train_spawner = $VoidEnter
-@onready var train_despawner = $VoidExit
-
 var traincar_scene = preload("uid://b72fquktom7tn")
 var current_train_car : StaticBody3D = null
 
@@ -35,5 +32,7 @@ func _on_train_path_completed(train : Node3D):
 func destroy_traincar(body: Node3D) -> void:
 	if current_train_car && body == current_train_car:
 		print("destroying traincar: ", body)
+		var npc_count : int = current_train_car.find_child("TraincarArea").get_child_count()
+		print("amount of NPCs fed: ", npc_count - 1)
 		current_train_car.queue_free()
 		current_train_car = null
