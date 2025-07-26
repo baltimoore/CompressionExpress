@@ -64,7 +64,7 @@ func _release_npc():
 		var npc_relative_to_train_compartment = train_compartment_container.to_local(held_npc.global_position) 
 		var within_x : bool = abs(npc_relative_to_train_compartment.x) <= train_compartment_container.shape.size.x / 2
 		
-		if held_npc.global_position.z > 11 and within_x:
+		if held_npc.global_position.z > 11 and within_x: # z11 is the start of rail tracks, which is good enough
 			print("npc is fed to the train")
 			held_npc.reparent(train_compartment)
 			held_npc.bounding_box = train_compartment_container

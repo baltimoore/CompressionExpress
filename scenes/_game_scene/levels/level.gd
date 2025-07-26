@@ -1,13 +1,34 @@
 extends Node3D
 
-var npc_scene = preload("res://scenes/_game_scene/characters/NPC.tscn")
-var occupied_positions : Array[Vector3] = []
+var level_state : LevelState
 const MAX_SEARCH_ATTEMPTS = 20
 
 # NPC nodes
+var npc_scene = preload("res://scenes/_game_scene/characters/NPC.tscn")
 @onready var npc_entrance_path = $NPC/Navigation/EntrancePath
 @onready var npc_waiting_area = $NPC/WaitingArea
 @onready var npc_dragging_area = $NPC/DraggingArea
+
+
+
+#### ### ### ### ### ### ###
+##  GAME STATE SETUP
+#### ### ### ### ### ### ###
+func _ready() -> void:
+	level_state = GameState.get_level_state(scene_file_path)
+	_populate_area_with_npcs(level_state.npc_occupied_positions)
+	%Traincar.update_fed_npcs.connect(_on_train_passed)
+
+func _populate_area_with_npcs(npc_locations) -> void:
+	for pos : Vector3 in npc_locations:
+		var npc = npc_scene.instantiate()
+		
+		npc.add_to_group("draggable_npc")
+		npc.bounding_box = npc_waiting_area.find_child("Container", false)
+		npc_waiting_area.add_child(npc)
+		npc.global_position = pos
+
+
 
 #### ### ### ### ### ### ###
 ##  NPC CONTROLLING METHODS
@@ -22,7 +43,9 @@ func spawn_npc():
 	npc.path_follow = path_follow
 	$NPC.add_child(npc)
 	
-	npc.connect("npc_path_completed", Callable(self, "_on_entrance_path_completed"))
+	npc.npc_path_completed.connect(_on_entrance_path_completed)
+	npc.npc_arrived_at_location.connect(_on_npc_location_change)
+	npc.npc_moved.connect(_on_npc_location_change)
 
 func _on_entrance_path_completed(npc):
 	# gotta remove the follow path, otherwise the movement loops
@@ -32,15 +55,20 @@ func _on_entrance_path_completed(npc):
 	npc.bounding_box = npc_waiting_area.find_child("Container", false)
 	
 	var free_spot = npc_waiting_area.pick_random_free_spot()
-	occupied_positions.append(free_spot)
 	print("Located free target position: ", free_spot)
 	npc.location_vector = free_spot
-#	# await their arrival at their waiting spot
-#	npc.connect("npc_arrived_at_location", Callable(self, "_on_reached_waiting_position"))
-#
-#func _on_reached_waiting_position(npc_position):
-#	# do we even need this?
-#	pass
+
+
+
+#### ### ### ### ### ### ###
+##  GAMESTATE UPDATES
+#### ### ### ### ### ### ###
+func _on_npc_location_change(_npc_location) -> void:
+	level_state.npc_occupied_positions = npc_waiting_area.all_occuped_positions()
+
+func _on_train_passed(amount_fed : int) -> void:
+	level_state.npc_occupied_positions = npc_waiting_area.all_occuped_positions()
+	level_state.npcs_fed_amount += amount_fed
 
 
 

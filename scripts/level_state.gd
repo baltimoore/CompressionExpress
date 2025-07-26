@@ -1,5 +1,5 @@
 class_name LevelState
 extends Resource
 
-@export var color : Color
-@export var tutorial_read : bool = false
+@export var npc_occupied_positions : Array[Vector3]
+@export var npcs_fed_amount : int

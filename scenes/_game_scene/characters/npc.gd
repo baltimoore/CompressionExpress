@@ -23,6 +23,7 @@ var is_dragged := false
 
 signal npc_path_completed(npc)
 signal npc_arrived_at_location(npc_position)
+signal npc_moved(npc_position)
 
 func _physics_process(delta):
 	# While being dragged, don't move automatically
@@ -120,3 +121,4 @@ func start_drag():
 func stop_drag():
 	is_dragged = false
 	nav.set_enabled(true)
+	emit_signal("npc_moved", global_position)

@@ -3,6 +3,8 @@ extends Node3D
 var traincar_scene = preload("uid://b72fquktom7tn")
 var current_train_car : StaticBody3D = null
 
+signal update_fed_npcs(amount : int)
+
 
 
 #### ### ### ### ### ### ###
@@ -36,3 +38,5 @@ func destroy_traincar(body: Node3D) -> void:
 		print("amount of NPCs fed: ", npc_count - 1)
 		current_train_car.queue_free()
 		current_train_car = null
+
+		emit_signal("update_fed_npcs", npc_count)
