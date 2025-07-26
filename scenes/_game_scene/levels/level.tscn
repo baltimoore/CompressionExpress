@@ -25,7 +25,7 @@ size = Vector3(4, 10, 6)
 
 [sub_resource type="Curve3D" id="Curve3D_17rba"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0, 0, 0, 200, 0, 0),
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0, 0, 0, 120, 0, 0),
 "tilts": PackedFloat32Array(0, 0, 0)
 }
 point_count = 3
@@ -77,10 +77,12 @@ collision_mask = 16777215
 shape = SubResource("BoxShape3D_djoew")
 
 [node name="Traincar" type="Node3D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("4_ynhks")
 
 [node name="VoidEnter" type="Area3D" parent="Traincar"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.5, 5, 13.5)
+collision_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Traincar/VoidEnter"]
 shape = SubResource("BoxShape3D_nhcvs")
@@ -90,7 +92,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65, 0.67, 13.3)
 curve = SubResource("Curve3D_17rba")
 
 [node name="VoidExit" type="Area3D" parent="Traincar"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 5, 13.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 5, 13.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Traincar/VoidExit"]
 shape = SubResource("BoxShape3D_nhcvs")
@@ -111,6 +113,15 @@ offset_right = 1258.0
 offset_bottom = 236.0
 text = "spawn traincar"
 
+[node name="despawnTraincar" type="Button" parent="DebugUI"]
+offset_left = 959.0
+offset_top = 266.0
+offset_right = 1258.0
+offset_bottom = 357.0
+text = "despawn traincar"
+
+[connection signal="body_entered" from="Traincar/VoidExit" to="." method="_on_void_exit_body_exited"]
 [connection signal="body_exited" from="Traincar/VoidExit" to="." method="_on_void_exit_body_exited"]
 [connection signal="pressed" from="DebugUI/spawnNPC" to="." method="_on_spawn_npc_pressed"]
 [connection signal="pressed" from="DebugUI/spawnTraincar" to="." method="_on_spawn_traincar_pressed"]
+[connection signal="pressed" from="DebugUI/despawnTraincar" to="." method="_on_despawn_traincar_pressed"]

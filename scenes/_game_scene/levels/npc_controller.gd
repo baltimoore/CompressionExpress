@@ -45,7 +45,7 @@ func _attempt_pick_or_drag(mouse_pos: Vector2):
 	if npc_raycast:
 		held_npc = npc_raycast.collider
 		held_npc.reparent(dragging_area)
-		held_npc.bounding_box = dragging_area.find_child("Container")
+		held_npc.bounding_box = dragging_area.find_child("Container", false)
 		_update_position(mouse_pos)
 
 func _update_position(mouse_pos: Vector2):
@@ -57,5 +57,5 @@ func _update_position(mouse_pos: Vector2):
 
 func _release_npc():
 	held_npc.reparent(waiting_area)
-	held_npc.bounding_box = waiting_area.find_child("Container")
+	held_npc.bounding_box = waiting_area.find_child("Container", false)
 	held_npc = null

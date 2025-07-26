@@ -1,12 +1,14 @@
-extends StaticBody3D
+extends Node3D
 
 @export var speed = 15
 @export var bounding_box : CollisionShape3D
 
 var path_follow : PathFollow3D
 
+signal train_path_completed(train)
+
 func _physics_process(delta):
-	if path_follow && not path_follow.progress == 100:
+	if path_follow && not path_follow.progress_ratio > 0.95:
 		_move_along_path(delta)
 
 #### ### ### ### ### ### ###
@@ -19,3 +21,4 @@ func _move_along_path(delta):
 	# Check if we reached the end of the path
 	if path_follow.progress_ratio >= 0.95:
 		path_follow.progress_ratio = 1.0
+		emit_signal("train_path_completed", self)

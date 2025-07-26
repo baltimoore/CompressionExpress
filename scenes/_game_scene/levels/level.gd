@@ -29,7 +29,7 @@ func _on_entrance_path_completed(npc):
 	npc.path_follow = null
 	npc.add_to_group("draggable_npc")
 	npc.reparent(npc_waiting_area, true)
-	npc.bounding_box = npc_waiting_area.find_child("Container")
+	npc.bounding_box = npc_waiting_area.find_child("Container", false)
 	
 	var free_spot = npc_waiting_area.pick_random_free_spot()
 	occupied_positions.append(free_spot)
@@ -55,4 +55,9 @@ func _on_spawn_traincar_pressed() -> void:
 
 func _on_void_exit_body_exited(body: Node3D) -> void:
 	print("void exited")
-	$Traincar.destroy_traincar(body)
+	%Traincar.destroy_traincar(body)
+
+func _on_despawn_traincar_pressed() -> void:
+	print("force despawn traincar")
+	var train = %Traincar.current_train_car
+	%Traincar.destroy_traincar(train)
