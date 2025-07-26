@@ -1,13 +1,62 @@
 extends Node3D
 
+var npc_scene = preload("res://scenes/_game_scene/characters/NPC.tscn")
+
 @onready var camera = %PlayerCamera
-@onready var waiting_area = $"WaitingArea"
-@onready var dragging_area = $"DraggingArea"
+@onready var entrance_path = $Navigation/EntrancePath
+@onready var waiting_area = $WaitingArea
+@onready var dragging_area = $DraggingArea
 
 const LAYER_MASK_NPC = 2  #Assuming draggable NPCs are in layer 2
 const LAYER_MASK_DRAGGING_AREA = 4  #Assuming dragging area is in layer 4
 
 var held_npc: CharacterBody3D = null
+
+func setup(npc_locations : Array[Vector3]) -> void:
+	# Populate the waiting area with NPCs
+	for pos : Vector3 in npc_locations:
+		var npc = npc_scene.instantiate()
+
+		npc.add_to_group("draggable_npc")
+		npc.bounding_box = waiting_area.find_child("Container", false)
+		waiting_area.add_child(npc)
+		npc.global_position = pos
+
+
+
+#### ### ### ### ### ### ###
+##  NPC SCENE INITIALIZATION
+#### ### ### ### ### ### ###
+
+func spawn_npc() -> CharacterBody3D:
+	print("spawning new npc")
+	var path_follow = PathFollow3D.new()
+	entrance_path.add_child(path_follow)
+	path_follow.progress = 0
+	
+	var npc = npc_scene.instantiate()
+	npc.path_follow = path_follow
+	add_child(npc)
+	
+	npc.npc_path_completed.connect(_on_entrance_path_completed)
+	return npc
+
+func _on_entrance_path_completed(npc):
+	# gotta remove the follow path, otherwise the movement loops
+	npc.path_follow = null
+	npc.add_to_group("draggable_npc")
+	npc.reparent(waiting_area, true)
+	npc.bounding_box = waiting_area.find_child("Container", false)
+	
+	var free_spot = waiting_area.pick_random_free_spot()
+	#print("Located free target position: ", free_spot)
+	npc.location_vector = free_spot
+
+
+
+#### ### ### ### ### ### ###
+##  NPC USER CONTROL
+#### ### ### ### ### ### ###
 
 func _input(event):
 	if event is InputEventMouseButton:

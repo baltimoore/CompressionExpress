@@ -11,7 +11,7 @@ signal update_fed_npcs(amount : int)
 ##  TRAINCAR CONSTRUCTOR & DESTRUCTOR
 #### ### ### ### ### ### ###
 
-func spawn_traincar() -> void:
+func spawn_traincar() -> StaticBody3D:
 	# if a traincar already exists, delete it
 	destroy_traincar(current_train_car)
 	
@@ -22,20 +22,20 @@ func spawn_traincar() -> void:
 	# create the train within the traincar node
 	var train = traincar_scene.instantiate()
 	train.path_follow = path_follow
-	self.add_child(train)
 	current_train_car = train
+	self.add_child(train)
 	print("spawned traincar: ", train)
-	# await their arrival at their waiting spot
-	current_train_car.connect("train_path_completed", Callable(self, "_on_train_path_completed"))
 
-func _on_train_path_completed(train : Node3D):
-	destroy_traincar(train)
+	# await their arrival at their waiting spot
+	current_train_car.train_path_completed.connect(destroy_traincar)
+	return current_train_car
 
 func destroy_traincar(body: Node3D) -> void:
 	if current_train_car && body == current_train_car:
 		print("destroying traincar: ", body)
-		var npc_count : int = current_train_car.find_child("TraincarArea").get_child_count()
-		print("amount of NPCs fed: ", npc_count - 1)
+		# -1, because of the container
+		var npc_count : int = current_train_car.find_child("TraincarArea").get_child_count() - 1
+		print("amount of NPCs just fed: ", npc_count)
 		current_train_car.queue_free()
 		current_train_car = null
 

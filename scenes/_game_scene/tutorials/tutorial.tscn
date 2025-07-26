@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://cd174nlotc4xy"]
+[gd_scene load_steps=2 format=3 uid="uid://b8vsxuuyong8g"]
 
-[ext_resource type="PackedScene" uid="uid://wny2d8dvp3ok" path="res://addons/maaacks_game_template/base/scenes/overlaid_menu/overlaid_menu.tscn" id="1_hy5iy"]
+[ext_resource type="PackedScene" uid="uid://wny2d8dvp3ok" path="res://addons/maaacks_game_template/base/scenes/overlaid_menu/overlaid_menu.tscn" id="1_b2dkv"]
 
-[node name="Tutorial3" instance=ExtResource("1_hy5iy")]
+[node name="Tutorial1" instance=ExtResource("1_b2dkv")]
 
 [node name="MenuPanelContainer" parent="." index="1"]
 offset_left = -206.0
@@ -20,7 +20,6 @@ text = "Tutorial"
 visible = true
 
 [node name="DescriptionLabel" parent="MenuPanelContainer/MarginContainer/BoxContainer/DescriptionMargin" index="0"]
-text = "[center]The color picker at the bottom-right updates the level state. This change persists until the game is reset.
-
-The label at the bottom-center displays the current input action detected, if any are setup for the project.[/center]"
+text = "[center]Move the humans coming in to the train carts.
+Click and hold with your mouse to move them.[/center]"
 fit_content = true

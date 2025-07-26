@@ -30,6 +30,13 @@ point_count = 3
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_0jr6r")
 
+[node name="Timers" type="Node" parent="."]
+
+[node name="NpcTimer" type="Timer" parent="Timers"]
+one_shot = true
+
+[node name="TrainTimer" type="Timer" parent="Timers"]
+
 [node name="PlayerCamera" type="Camera3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, -5, 17.5, 12.5)
@@ -82,6 +89,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65, 0.67, 13.3)
 curve = SubResource("Curve3D_17rba")
 
 [node name="DebugUI" type="CanvasLayer" parent="."]
+layer = 0
+visible = false
 
 [node name="spawnNPC" type="Button" parent="DebugUI"]
 offset_left = 957.0
@@ -104,6 +113,17 @@ offset_right = 1258.0
 offset_bottom = 357.0
 text = "despawn traincar"
 
+[node name="GameplayUI" type="CanvasLayer" parent="."]
+
+[node name="HumansFed" type="Label" parent="GameplayUI"]
+offset_left = 28.0
+offset_top = 665.0
+offset_right = 68.0
+offset_bottom = 688.0
+theme_type_variation = &"HeaderLarge"
+
+[connection signal="timeout" from="Timers/NpcTimer" to="." method="_on_npc_timer_timeout"]
+[connection signal="timeout" from="Timers/TrainTimer" to="." method="_on_train_timer_timeout"]
 [connection signal="pressed" from="DebugUI/spawnNPC" to="." method="_on_spawn_npc_pressed"]
 [connection signal="pressed" from="DebugUI/spawnTraincar" to="." method="_on_spawn_traincar_pressed"]
 [connection signal="pressed" from="DebugUI/despawnTraincar" to="." method="_on_despawn_traincar_pressed"]
