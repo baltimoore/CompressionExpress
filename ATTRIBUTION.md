@@ -4,6 +4,10 @@
 	#### Lead developer
 	Gatis Ieviņš
 	[Website](https://maskless.id.lv)
+	
+	#### Bugfixer and code writer
+	ChatGPT
+	[Website](https://chatgpt.com/)
 
 ## Sourced
 	#### Godot Engine Logo
