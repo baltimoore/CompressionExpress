@@ -2,7 +2,6 @@ extends Area3D
 
 @onready var collision_shape := $CollisionShape3D
 
-var occupied_positions : Array[Vector3] = []
 const MAX_SEARCH_ATTEMPTS := 20
 
 func pick_random_free_spot() -> Vector3:
@@ -24,8 +23,12 @@ func pick_random_free_spot() -> Vector3:
 
 
 func is_position_free(pos: Vector3) -> bool:
-	for p in occupied_positions: # width of NPC collision box + some space
-		# sorry, someone is already staying there
-		return false
+	for child in self.get_children():
+		if child is not CharacterBody3D:
+			continue
+		
+		if child.global_position.distance_to(pos) < 0.8: # width of NPC collision box + some space
+			# sorry, someone is already staying there
+			return false
 	# we went through everything, and seems like nobody is standing there (yet)!
 	return true
