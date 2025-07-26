@@ -27,7 +27,12 @@
 	
 	#### Modular Train Pack
 	Author: Quaternius
-	Source: [https://quaternius.com](https://quaternius.com/packs/modulartrain.html)
+	Source: [quaternius.com](https://quaternius.com/packs/modulartrain.html)
+	License: [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)
+	
+	#### SFX library
+	Author: Various
+	Source: [FreeSound](https://freesound.org/)
 	License: [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)
 
 ## Tools

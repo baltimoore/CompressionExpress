@@ -1,7 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://c173qjodv4ti7"]
+[gd_scene load_steps=5 format=3 uid="uid://c173qjodv4ti7"]
 
 [ext_resource type="PackedScene" uid="uid://bqqngki8bm3iq" path="res://addons/maaacks_game_template/base/scenes/overlaid_menu/overlaid_menu_container.tscn" id="1_y6ien"]
 [ext_resource type="Script" uid="uid://smm4b6lhu518" path="res://scenes/overlaid_menus/overlaid_menu_container.gd" id="2_7kq66"]
+[ext_resource type="Script" uid="uid://b5oej1q4h7jvh" path="res://addons/maaacks_game_template/base/scripts/ui_sound_controller.gd" id="3_3aqwn"]
+[ext_resource type="AudioStream" uid="uid://b405iauxwrten" path="res://resources/audio/staple_press.wav" id="4_wsgkk"]
 
 [node name="OverlaidMenuContainer" instance=ExtResource("1_y6ien")]
 script = ExtResource("2_7kq66")
+
+[node name="UISoundController" type="Node" parent="." index="0"]
+script = ExtResource("3_3aqwn")
+button_pressed = ExtResource("4_wsgkk")
+tab_selected = ExtResource("4_wsgkk")
