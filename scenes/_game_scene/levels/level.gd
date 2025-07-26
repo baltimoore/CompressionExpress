@@ -44,6 +44,11 @@ func _on_npc_timer_timeout():
 	_start_random_npc_timer()  # Restart with new random interval
 
 func _on_train_timer_timeout():
+	# if there is a train already, we are not replacing it with a new one
+	if $Traincar.current_train_car and $Traincar.current_train_car.current_path_progress() < 0.8:
+		_start_random_train_timer()
+		return
+	
 	_spawn_train()
 	_start_random_train_timer()
 
