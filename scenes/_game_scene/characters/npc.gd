@@ -20,12 +20,19 @@ var stuck_timer := 0.0
 var last_push_time := 0.0
 const PUSH_COOLDOWN := 0.1
 
+# deagging variables
+var is_dragged := false
+
 signal reached_waiting_area(npc)
 signal reached_waiting_position(npc_position)
 
 func _physics_process(delta):
+		# While dragging, don't move automatically
+	if is_dragged:
+		velocity = Vector3.ZERO
+	
 	# Just spawned, moving along the path
-	if path_follow && not in_waiting_area:
+	elif path_follow && not in_waiting_area:
 		_move_along_entry_path(delta)
 	# Entered waiting area, now going to waiting spot
 	elif in_waiting_area && waiting_position_distance != Vector3.ZERO:
@@ -40,6 +47,10 @@ func _physics_process(delta):
 	move_and_slide()
 	velocity = Vector3.ZERO
 
+#### ### ### ### ### ### ###
+##  NPC navigation functions
+#### ### ### ### ### ### ###
+
 # Function to handle path following until NPC reaches the waiting area
 func _move_along_entry_path(delta):
 	path_follow.progress += speed * delta
@@ -53,9 +64,11 @@ func _move_along_entry_path(delta):
 
 # Function to handle movement toward the assigned waiting position
 func _move_to_waiting_spot(delta):
-	var dir = (waiting_position_distance - global_position).normalized()
+	# move NPC to draggable npc layer
+	self.collision_layer = 2
 	
 	# try moving NPC
+	var dir = (waiting_position_distance - global_position).normalized()
 	velocity = dir * speed
 	
 	# if NPC is close enough, he's close enough
@@ -91,10 +104,25 @@ func _bind_position_within_bounding_box(pos: Vector3) -> Vector3:
 	
 	return Vector3(clamped_x, clamped_y, clamped_z)
 
-
 # pushing movement logic
 func _on_personal_space_body_entered(body):
 	if body != self and body is CharacterBody3D and last_push_time <= 0:
 		var push_dir = (global_position - body.global_position).normalized()
 		velocity = push_dir * speed * 1.5
 		last_push_time = PUSH_COOLDOWN
+
+#### ### ### ### ### ### ###
+##  NPC draggability functions
+#### ### ### ### ### ### ###
+
+func start_drag():
+	is_dragged = true
+	in_waiting_area = false
+	velocity = Vector3.ZERO
+	# Optionally, disable NavigationAgent3D path following to stop movement
+	nav.set_enabled(false)
+
+func stop_drag():
+	is_dragged = false
+	in_waiting_area = true
+	nav.set_enabled(true)

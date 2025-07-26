@@ -14,14 +14,15 @@ func spawn_npc():
 	
 	var npc = npc_scene.instantiate()
 	npc.path_follow = path_follow
-	npc.bounding_box = $NpcNavigation/WaitingArea/CollisionShape3D
-	$NpcContainer.add_child(npc)
+	$NpcAreas.add_child(npc)
 	
 	npc.connect("reached_waiting_area", Callable(self, "_on_reached_waiting_area"))
 
 func _on_reached_waiting_area(npc):
 	# gotta remove the follow path, otherwise the movement loops
 	npc.path_follow = null
+	npc.add_to_group("draggable_npc")
+	npc.reparent($"NpcAreas/WaitingArea", true)
 	
 	var free_spot = pick_random_free_spot()
 	print("Located free target position: ")
@@ -37,7 +38,7 @@ func _on_reached_waiting_position(npc_position):
 ##  WAIT POSITION LOCATION METHODS
 #### ### ### ### ### ### ###
 func pick_random_free_spot():
-	var area = $NpcNavigation/WaitingArea/CollisionShape3D
+	var area = $NpcAreas/WaitingArea/CollisionShape3D
 	var area_location = area.global_transform.origin
 	var area_size = area.shape.size / 2.0 # calculating size from centerpoint
 	for i in range (MAX_SEARCH_ATTEMPTS):

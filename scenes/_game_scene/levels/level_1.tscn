@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dvjrq66v54urr"]
+[gd_scene load_steps=7 format=3 uid="uid://dvjrq66v54urr"]
 
 [ext_resource type="PackedScene" uid="uid://byv5mepgohgtm" path="res://assets/train-station-godot/trainstation.tscn" id="1_4iax2"]
 [ext_resource type="Script" uid="uid://doppr7dq0lko8" path="res://scenes/_game_scene/levels/level_1.gd" id="1_b471h"]
+[ext_resource type="Script" uid="uid://cpex3oabh0hlx" path="res://scenes/_game_scene/levels/dragging_logic.gd" id="3_waxwv"]
 
 [sub_resource type="Curve3D" id="Curve3D_4iax2"]
 bake_interval = 10.0
@@ -14,10 +15,14 @@ point_count = 5
 [sub_resource type="BoxShape3D" id="BoxShape3D_waxwv"]
 size = Vector3(22.5, 1, 4)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_djoew"]
+size = Vector3(23, 1, 10)
+
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_b471h")
 
 [node name="PlayerCamera" type="Camera3D" parent="."]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, -5, 17.5, 12.5)
 top_level = true
 fov = 60.0
@@ -28,6 +33,7 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, -0.206272, 0.978495, 0, -0.978495, -0.206272, 0, 5.63096, 0)
+layers = 524288
 light_energy = 0.7
 
 [node name="Trainstation" parent="Environment" instance=ExtResource("1_4iax2")]
@@ -39,13 +45,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.14539, -0.224273)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.2218, 10.0024, 2.5)
 curve = SubResource("Curve3D_4iax2")
 
-[node name="WaitingArea" type="Area3D" parent="NpcNavigation"]
+[node name="NpcAreas" type="Node3D" parent="."]
+script = ExtResource("3_waxwv")
+
+[node name="WaitingArea" type="Area3D" parent="NpcAreas"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, 6)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NpcNavigation/WaitingArea"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NpcAreas/WaitingArea"]
 shape = SubResource("BoxShape3D_waxwv")
 
-[node name="NpcContainer" type="Node3D" parent="."]
+[node name="DraggingArea" type="Area3D" parent="NpcAreas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 5, 9)
+collision_layer = 16777215
+collision_mask = 16777215
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NpcAreas/DraggingArea"]
+shape = SubResource("BoxShape3D_djoew")
 
 [node name="DebugUI" type="CanvasLayer" parent="."]
 
