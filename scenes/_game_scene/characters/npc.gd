@@ -36,7 +36,7 @@ func _physics_process(delta):
 		_move_to_location(delta)
 	
 	# Clamp position so NPC stays inside waiting area
-	if bounding_box and not is_dragged:
+	if bounding_box:
 		global_position = _bind_position_within_bounding_box()
 	
 	# NPC has finalized their position; time to be shuffled around

@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://b72fquktom7tn"]
+
+[ext_resource type="PackedScene" uid="uid://ursun4av5a3f" path="res://assets/modular_train_pack/CargoTrain_Front.fbx" id="1_36ylq"]
+[ext_resource type="Script" uid="uid://dcmgx1p60lv64" path="res://scenes/_game_scene/characters/train.gd" id="1_colep"]
+[ext_resource type="PackedScene" uid="uid://bsd38swt70784" path="res://assets/modular_train_pack/Locomotive_PassengerWagon.fbx" id="2_h15sm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_colep"]
+size = Vector3(20, 0.5, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_65yfc"]
+size = Vector3(0.5, 7, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0w0s1"]
+size = Vector3(20, 7, 0.5)
+
+[node name="Train" type="StaticBody3D"]
+script = ExtResource("1_colep")
+
+[node name="Meshes" type="Node3D" parent="."]
+transform = Transform3D(-2.5, 0, -2.18557e-07, 0, 2.5, 0, 2.18557e-07, 0, -2.5, 0, 0, 0)
+
+[node name="CargoTrain_Front" parent="Meshes" instance=ExtResource("1_36ylq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
+
+[node name="Locomotive_PassengerWagon" parent="Meshes" instance=ExtResource("2_h15sm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 0)
+
+[node name="CollisionFloor" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 1.5, 0)
+shape = SubResource("BoxShape3D_colep")
+
+[node name="CollisionFront" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 5, 0)
+shape = SubResource("BoxShape3D_65yfc")
+
+[node name="CollisionBack" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 5, 0)
+shape = SubResource("BoxShape3D_65yfc")
+
+[node name="CollisionRight" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 5, 2.5)
+shape = SubResource("BoxShape3D_0w0s1")

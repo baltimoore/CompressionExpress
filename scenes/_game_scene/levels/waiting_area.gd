@@ -1,6 +1,6 @@
 extends Area3D
 
-@onready var collision_shape := $CollisionShape3D
+@onready var collision_shape := $Container
 
 const MAX_SEARCH_ATTEMPTS := 20
 

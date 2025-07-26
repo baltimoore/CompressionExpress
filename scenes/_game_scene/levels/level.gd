@@ -7,6 +7,7 @@ const MAX_SEARCH_ATTEMPTS = 20
 # NPC nodes
 @onready var npc_entrance_path = $NPC/Navigation/EntrancePath
 @onready var npc_waiting_area = $NPC/WaitingArea
+@onready var npc_dragging_area = $NPC/DraggingArea
 
 #### ### ### ### ### ### ###
 ##  NPC CONTROLLING METHODS
@@ -28,6 +29,7 @@ func _on_entrance_path_completed(npc):
 	npc.path_follow = null
 	npc.add_to_group("draggable_npc")
 	npc.reparent(npc_waiting_area, true)
+	npc.bounding_box = npc_waiting_area.find_child("Container")
 	
 	var free_spot = npc_waiting_area.pick_random_free_spot()
 	occupied_positions.append(free_spot)
@@ -43,18 +45,14 @@ func _on_reached_waiting_position(npc_position):
 
 
 #### ### ### ### ### ### ###
-##  TRAINCAR CONTROLLING METHODS
-#### ### ### ### ### ### ###
-func spawn_traincar():
-	pass
-
-
-
-#### ### ### ### ### ### ###
 ##  DEBUG UI INTERFACE
 #### ### ### ### ### ### ###
 func _on_spawn_npc_pressed() -> void:
 	spawn_npc()
 
 func _on_spawn_traincar_pressed() -> void:
-	spawn_traincar()
+	$Traincar.spawn_traincar()
+
+func _on_void_exit_body_exited(body: Node3D) -> void:
+	print("void exited")
+	$Traincar.destroy_traincar(body)

@@ -3,17 +3,30 @@ extends Node3D
 @onready var train_spawner = $VoidEnter
 @onready var train_despawner = $VoidExit
 
-var traincar_scene = preload("res://assets/modular_train_pack/train.tscn")
-var current_train_car: Node3D = null
+var traincar_scene = preload("uid://b72fquktom7tn")
+var current_train_car : Node3D = null
+var path_follow : PathFollow3D
 
-func _on_train_spawn_triggered() -> void:
-	var train = traincar_scene.instantiate()
-	train.global_transform.origin = train_spawner.global_transform.origin - Vector3(5, 0, 0) # adjust as needed
+
+
+#### ### ### ### ### ### ###
+##  TRAINCAR CONSTRUCTOR & DESTRUCTOR
+#### ### ### ### ### ### ###
+
+func spawn_traincar() -> void:
+	print("spawning traincar")
+	var path_follow = PathFollow3D.new()
+	$Path3D.add_child(path_follow)
+	path_follow.progress = 0
+	
 	# create the train within the traincar node
-	add_child(train)
+	var train = traincar_scene.instantiate()
+	train.path_follow = path_follow
+	self.add_child(train)
 	current_train_car = train
 
-func _on_void_exit_body_exited(body: Node3D) -> void:
+func destroy_traincar(body: Node3D) -> void:
+	print("destroying traincar")
 	if current_train_car && body == current_train_car:
 		current_train_car.queue_free()
 		current_train_car = null
