@@ -7,6 +7,8 @@ var level_state : LevelState
 # Timer nodes
 @onready var npc_timer = $Timers/NpcTimer
 @onready var train_timer = $Timers/TrainTimer
+var npc_timer_range = Vector2(0.5, 5.0)
+var train_timer_range = Vector2(10.0, 20.0)
 
 signal level_lost
 
@@ -36,12 +38,17 @@ func _ready() -> void:
 #### ### ### ### ### ### ###
 
 func _start_random_npc_timer():
-	var wait = randf_range(2.0, 5.0)  # Between 2 and 5 seconds
+	# gotta be careful we don't go into negatives
+	npc_timer_range = Vector2(
+		maxf(0.5, npc_timer_range.x),
+		maxf(3.0, npc_timer_range.y)
+	)
+	var wait = randf_range(npc_timer_range.x, npc_timer_range.y)
 	npc_timer.wait_time = wait
 	npc_timer.start()
 
 func _start_random_train_timer():
-	var wait = randf_range(8.0, 12.0)  # Between 8 and 12 seconds
+	var wait = randf_range(train_timer_range.x, train_timer_range.y)
 	train_timer.wait_time = wait
 	train_timer.start()
 
@@ -52,6 +59,7 @@ func _on_npc_timer_timeout():
 func _on_train_timer_timeout():
 	# if there is a train already, we are not replacing it with a new one
 	if $Traincar.current_train_car and $Traincar.current_train_car.current_path_progress() < 0.8:
+		train_timer_range += Vector2(2.0, 1.0)
 		_start_random_train_timer()
 		return
 	
@@ -60,12 +68,16 @@ func _on_train_timer_timeout():
 
 func _spawn_npc():
 	var new_npc = $NPC.spawn_npc()
+	# the longer in game you go, the more NPCs spawn
+	npc_timer_range -= Vector2(0.01, 0.01)
 	# assign the NPC scene signals to activate the main level manager's functions
 	new_npc.npc_arrived_at_location.connect(_on_npc_location_change)
 	new_npc.npc_moved.connect(_on_npc_location_change)
 
 func _spawn_train():
 	$Traincar.spawn_traincar()
+	# the more in-game you go, the longer the interval between trains
+	train_timer_range += Vector2(0.05, 0.05)
 	# No need to register the update_fed_npcs signal,
 	# since it emits from the train_controller, not train itself
 
@@ -81,6 +93,8 @@ func _on_npc_location_change(_npc_location) -> void:
 func _on_train_passed(amount_fed : int) -> void:
 	level_state.npc_occupied_positions = npc_waiting_area.all_occuped_positions()
 	level_state.npcs_fed_amount += amount_fed
+	# people disappearing frightens 
+	npc_timer_range += Vector2(amount_fed / 20, amount_fed / 20)
 	_update_humans_fed()
 
 func _toggle_free_spots(has_free_spots : bool) -> void:
