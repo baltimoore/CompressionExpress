@@ -53,8 +53,13 @@ func _physics_process(delta):
 
 # Function to handle path following until NPC reaches the waiting area
 func _move_along_path(delta):
+	var previous_position = path_follow.global_position
 	path_follow.progress += speed * delta
 	global_position = path_follow.global_position
+	
+	# have the NPC look in the direction of their movement
+	var movement = global_position - previous_position
+	rotation.y = atan2(movement.x, movement.z) 
 	
 	# Check if we reached the end of the path
 	if path_follow.progress_ratio >= 0.95:
@@ -70,6 +75,8 @@ func _move_to_location(delta):
 	# try moving NPC
 	var dir = (location_vector - global_position).normalized()
 	velocity = dir * speed
+	# have the NPC look in the direction of their movement
+	rotation.y = atan2(velocity.x, velocity.z) 
 	
 	# if NPC is close enough, he's close enough
 	if global_position.distance_to(location_vector) < 0.5:
@@ -90,6 +97,7 @@ func _arrived_at_waiting_spot():
 	# Stop movement
 	location_vector = Vector3.ZERO  
 	velocity = Vector3.ZERO
+	rotation.y = 0
 	emit_signal("npc_arrived_at_location", self.global_position)
 
 # NPC containment within area
