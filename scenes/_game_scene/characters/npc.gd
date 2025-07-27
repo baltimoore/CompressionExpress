@@ -29,6 +29,7 @@ func _physics_process(delta):
 	# While being dragged, don't move automatically
 	if is_dragged:
 		velocity = Vector3.ZERO
+		pass
 	# Just spawned, moving along the path
 	elif path_follow && not path_follow.progress == 100:
 		_move_along_path(delta)
@@ -36,15 +37,15 @@ func _physics_process(delta):
 	elif path_follow == null && location_vector != Vector3.ZERO:
 		_move_to_location(delta)
 	
-	# Clamp position so NPC stays inside waiting area
-	if bounding_box:
-		global_position = _bind_position_within_bounding_box()
+	move_and_slide()
+	velocity = Vector3.ZERO
 	
 	# NPC has finalized their position; time to be shuffled around
 	last_push_time = max(0.0, last_push_time - delta)
 	
-	move_and_slide()
-	velocity = Vector3.ZERO
+	# Clamp position so NPC stays inside waiting area
+	if bounding_box:
+		global_position = _bind_position_within_bounding_box()
 
 #### ### ### ### ### ### ###
 ##  NPC navigation functions
@@ -61,7 +62,11 @@ func _move_along_path(delta):
 		emit_signal("npc_path_completed", self)
 
 # Function to handle movement toward the assigned waiting position
-func _move_to_location(delta):	
+func _move_to_location(delta):
+	# We do not move npc around if they are being dragged
+	if is_dragged:
+		return
+		
 	# try moving NPC
 	var dir = (location_vector - global_position).normalized()
 	velocity = dir * speed
