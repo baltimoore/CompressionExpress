@@ -7,6 +7,7 @@ var level_state : LevelState
 # Timer nodes
 @onready var npc_timer = $Timers/NpcTimer
 @onready var train_timer = $Timers/TrainTimer
+@onready var processing_timer = $Timers/HumanProcessingTimer
 var npc_timer_range = Vector2(0.5, 5.0)
 var train_timer_range = Vector2(10.0, 20.0)
 
@@ -95,6 +96,7 @@ func _on_train_passed(amount_fed : int) -> void:
 	level_state.npcs_fed_amount += amount_fed
 	# people disappearing frightens 
 	npc_timer_range += Vector2(amount_fed / 20, amount_fed / 20)
+	_play_processing_audio(amount_fed)
 	_update_humans_fed()
 
 func _toggle_free_spots(has_free_spots : bool) -> void:
@@ -135,4 +137,23 @@ func _on_despawn_traincar_pressed() -> void:
 
 func _update_humans_fed():
 	print("updating label")
-	$GameplayUI/PanelContainer/HumansFed.text = "Humans fed: %d" % level_state.npcs_fed_amount
+	$GameplayUI/PanelContainer/HumansFed.text = "Humans compressed: %d" % level_state.npcs_fed_amount
+
+
+
+#### ### ### ### ### ### ###
+##  GAMEPLAY AUDIO INTERFACE
+#### ### ### ### ### ### ###
+
+func _play_processing_audio(amount_fed : int):
+	# if nobody was fed, don't play anything
+	if amount_fed <= 0:
+		return
+	$Audio/HumanProcessing/BoneAudioPlayer.play()
+	$Audio/HumanProcessing/FleshAudioPlayer.play()
+	processing_timer.wait_time = amount_fed * 1.5
+	processing_timer.start()
+
+func _on_human_processing_timer_timeout() -> void:
+	$Audio/HumanProcessing/BoneAudioPlayer.stop()
+	$Audio/HumanProcessing/FleshAudioPlayer.stop()

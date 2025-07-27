@@ -1,10 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://dvjrq66v54urr"]
+[gd_scene load_steps=14 format=3 uid="uid://dvjrq66v54urr"]
 
 [ext_resource type="Script" uid="uid://doppr7dq0lko8" path="res://scenes/_game_scene/levels/level.gd" id="1_0jr6r"]
 [ext_resource type="PackedScene" uid="uid://byv5mepgohgtm" path="res://assets/train-station-godot/trainstation.tscn" id="2_17rba"]
 [ext_resource type="Script" uid="uid://cpex3oabh0hlx" path="res://scenes/_game_scene/levels/npc_controller.gd" id="3_37r4n"]
+[ext_resource type="PackedScene" uid="uid://bkcsjsk2ciff" path="res://addons/maaacks_game_template/base/scenes/music_players/background_music_player.tscn" id="3_ynhks"]
 [ext_resource type="Script" uid="uid://c3noxqebpk0d4" path="res://scenes/_game_scene/levels/waiting_area.gd" id="4_17rba"]
+[ext_resource type="AudioStream" uid="uid://cc0x47354wk3y" path="res://resources/audio/bones.mp3" id="4_onvyx"]
 [ext_resource type="Script" uid="uid://chj5mkc5h5rao" path="res://scenes/_game_scene/levels/traincar_controller.gd" id="4_ynhks"]
+[ext_resource type="AudioStream" uid="uid://bs0o7gbm53h5d" path="res://resources/audio/flesh.mp3" id="5_r3p71"]
 
 [sub_resource type="Curve3D" id="Curve3D_4iax2"]
 bake_interval = 10.0
@@ -37,12 +40,29 @@ bg_color = Color(0.909804, 0.909804, 0.909804, 1)
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_0jr6r")
 
+[node name="Audio" type="Node" parent="."]
+
+[node name="HumanProcessing" type="Node" parent="Audio"]
+
+[node name="BoneAudioPlayer" parent="Audio/HumanProcessing" instance=ExtResource("3_ynhks")]
+stream = ExtResource("4_onvyx")
+autoplay = false
+parameters/looping = true
+
+[node name="FleshAudioPlayer" parent="Audio/HumanProcessing" instance=ExtResource("3_ynhks")]
+stream = ExtResource("5_r3p71")
+autoplay = false
+parameters/looping = true
+
 [node name="Timers" type="Node" parent="."]
 
 [node name="NpcTimer" type="Timer" parent="Timers"]
 one_shot = true
 
 [node name="TrainTimer" type="Timer" parent="Timers"]
+
+[node name="HumanProcessingTimer" type="Timer" parent="Timers"]
+one_shot = true
 
 [node name="PlayerCamera" type="Camera3D" parent="."]
 unique_name_in_owner = true
@@ -122,17 +142,18 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_top = -63.0
-offset_right = 250.0
+offset_right = 350.0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_0jr6r")
 
 [node name="HumansFed" type="Label" parent="GameplayUI/PanelContainer"]
 layout_mode = 2
 theme_type_variation = &"HeaderLarge"
-text = "Humans fed: "
+text = "Humans compressed: "
 
 [connection signal="timeout" from="Timers/NpcTimer" to="." method="_on_npc_timer_timeout"]
 [connection signal="timeout" from="Timers/TrainTimer" to="." method="_on_train_timer_timeout"]
+[connection signal="timeout" from="Timers/HumanProcessingTimer" to="." method="_on_human_processing_timer_timeout"]
 [connection signal="pressed" from="DebugUI/spawnNPC" to="." method="_on_spawn_npc_pressed"]
 [connection signal="pressed" from="DebugUI/spawnTraincar" to="." method="_on_spawn_traincar_pressed"]
 [connection signal="pressed" from="DebugUI/despawnTraincar" to="." method="_on_despawn_traincar_pressed"]

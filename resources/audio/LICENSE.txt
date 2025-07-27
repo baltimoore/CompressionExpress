@@ -1,15 +1,29 @@
+==== staple_press.wav
+
 Stapler / Stapling plier / Staple gun by Breviceps
 -- https://freesound.org/s/447935/
 -- License: Creative Commons 0
 
-=====
+===== sliding-paper.wav
 
 Sliding Paper Folder by PEDBRA
 -- https://freesound.org/s/388392/
 -- License: Creative Commons 0
 
-=====
+===== writing.wav
 
 writing.wav by rsellick
 -- https://freesound.org/s/545552/
+-- License: Creative Commons 0
+
+===== bones.mp3
+
+Lettuce wet juicy gore creature flesh by Canakinsound
+-- https://freesound.org/s/737308/
+-- License: Creative Commons 0
+
+==== flesh.mp3
+
+gore_gory_blood_smash_flesh_murder_bone_break.wav by EricsSoundschmiede
+-- https://freesound.org/s/513315/
 -- License: Creative Commons 0
