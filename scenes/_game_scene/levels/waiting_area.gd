@@ -3,6 +3,7 @@ extends Area3D
 @onready var collision_shape := $Container
 
 signal no_free_spots()
+signal has_free_spots()
 
 const MAX_SEARCH_ATTEMPTS := 20
 
@@ -18,12 +19,12 @@ func pick_random_free_spot() -> Vector3:
 		
 		# Evaluating whether the picked position isn't too close to someone already
 		if is_position_free(candidate_position):
+			has_free_spots.emit()
 			return candidate_position
 	
 	# fallback to center of wait area, if no randomized guesses were free
-	emit_signal("no_free_spots")
+	no_free_spots.emit()
 	return area_location
-
 
 func is_position_free(pos: Vector3) -> bool:
 	for child in all_occuped_positions():
@@ -41,7 +42,5 @@ func all_occuped_positions() -> Array[Vector3]:
 			continue
 		
 		positions.append(child.global_position)
-
+	
 	return positions
-
-		

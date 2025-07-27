@@ -37,7 +37,7 @@ func _move_along_path(delta):
 	# Check if we reached the end of the path
 	if progress >= 0.95:
 		path_follow.progress_ratio = 1.0
-		emit_signal("train_path_completed", self)
+		train_path_completed.emit(self)
 
 func current_path_progress() -> float:
 	return path_follow.progress_ratio

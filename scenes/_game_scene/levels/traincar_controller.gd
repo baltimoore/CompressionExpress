@@ -39,4 +39,4 @@ func destroy_traincar(body: Node3D) -> void:
 		current_train_car.queue_free()
 		current_train_car = null
 
-		emit_signal("update_fed_npcs", npc_count)
+		update_fed_npcs.emit(npc_count)

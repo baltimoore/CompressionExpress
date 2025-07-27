@@ -64,7 +64,7 @@ func _move_along_path(delta):
 	# Check if we reached the end of the path
 	if path_follow.progress_ratio >= 0.95:
 		path_follow.progress_ratio = 1.0
-		emit_signal("npc_path_completed", self)
+		npc_path_completed.emit(self)
 
 # Function to handle movement toward the assigned waiting position
 func _move_to_location(delta):
@@ -98,7 +98,7 @@ func _arrived_at_waiting_spot():
 	location_vector = Vector3.ZERO  
 	velocity = Vector3.ZERO
 	rotation.y = 0
-	emit_signal("npc_arrived_at_location", self.global_position)
+	npc_arrived_at_location.emit(self.global_position)
 
 # NPC containment within area
 func _bind_position_within_bounding_box() -> Vector3:
@@ -134,4 +134,4 @@ func start_drag():
 func stop_drag():
 	is_dragged = false
 	nav.set_enabled(true)
-	emit_signal("npc_moved", global_position)
+	npc_moved.emit(global_position)
