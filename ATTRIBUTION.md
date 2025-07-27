@@ -34,6 +34,10 @@
 	Author: Various
 	Source: [FreeSound](https://freesound.org/)
 	License: [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)
+	
+	#### Various 3d textures
+	Source: [FreeStylized.com](https://freestylized.com/)
+	License: Royalty Free License
 
 ## Tools
 	#### Godot
