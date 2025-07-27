@@ -10,6 +10,7 @@ var level_state : LevelState
 @onready var processing_timer = $Timers/HumanProcessingTimer
 var npc_timer_range = Vector2(0.5, 5.0)
 var train_timer_range = Vector2(10.0, 20.0)
+var decreased_npc_spawns : bool = false
 
 signal level_lost
 
@@ -41,9 +42,14 @@ func _ready() -> void:
 func _start_random_npc_timer():
 	# gotta be careful we don't go into negatives
 	npc_timer_range = Vector2(
-		maxf(0.5, npc_timer_range.x),
+		maxf(1, npc_timer_range.x),
 		maxf(3.0, npc_timer_range.y)
 	)
+	
+	# if we are in the middle of processing, people stay away
+	if decreased_npc_spawns:
+		npc_timer_range *= 3
+	
 	var wait = randf_range(npc_timer_range.x, npc_timer_range.y)
 	npc_timer.wait_time = wait
 	npc_timer.start()
@@ -149,6 +155,8 @@ func _play_processing_audio(amount_fed : int):
 	# if nobody was fed, don't play anything
 	if amount_fed <= 0:
 		return
+	# humans don't like sounds
+	decreased_npc_spawns = true
 	$Audio/HumanProcessing/BoneAudioPlayer.play()
 	$Audio/HumanProcessing/FleshAudioPlayer.play()
 	processing_timer.wait_time = amount_fed * 1.5
@@ -157,3 +165,4 @@ func _play_processing_audio(amount_fed : int):
 func _on_human_processing_timer_timeout() -> void:
 	$Audio/HumanProcessing/BoneAudioPlayer.stop()
 	$Audio/HumanProcessing/FleshAudioPlayer.stop()
+	decreased_npc_spawns = false
