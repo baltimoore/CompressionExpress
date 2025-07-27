@@ -24,13 +24,13 @@ func _move_along_path(delta):
 	
 	var target_speed : float
 	# Slow down around the middle of the path (platform zone)
-	if progress >= 0.35 and progress <= 0.6:
+	if progress >= 0.25 and progress <= 0.55:
 		target_speed = speed_slow
 	# increase our speed back up as we leave
 	else:
 		target_speed = speed_fast
 	
-	current_speed = lerp(current_speed, target_speed, delta * 7.0)
+	current_speed = lerp(current_speed, target_speed, delta * 0.6)
 	path_follow.progress += current_speed * delta
 	global_position = path_follow.global_position
 	

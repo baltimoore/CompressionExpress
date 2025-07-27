@@ -46,11 +46,12 @@ func _start_random_npc_timer():
 		maxf(3.0, npc_timer_range.y)
 	)
 	
+	var wait = randf_range(npc_timer_range.x, npc_timer_range.y)
 	# if we are in the middle of processing, people stay away
 	if decreased_npc_spawns:
-		npc_timer_range *= 3
+		wait *= 3.0
 	
-	var wait = randf_range(npc_timer_range.x, npc_timer_range.y)
+	print("NPC timer: ", npc_timer_range)
 	npc_timer.wait_time = wait
 	npc_timer.start()
 
@@ -80,6 +81,7 @@ func _spawn_npc():
 	# assign the NPC scene signals to activate the main level manager's functions
 	new_npc.npc_arrived_at_location.connect(_on_npc_location_change)
 	new_npc.npc_moved.connect(_on_npc_location_change)
+	# new_npc.npc_stuck.connect(func() : _toggle_free_spots(false))
 
 func _spawn_train():
 	$Traincar.spawn_traincar()
@@ -100,10 +102,10 @@ func _on_npc_location_change(_npc_location) -> void:
 func _on_train_passed(amount_fed : int) -> void:
 	level_state.npc_occupied_positions = npc_waiting_area.all_occuped_positions()
 	level_state.npcs_fed_amount += amount_fed
-	# people disappearing frightens 
-	npc_timer_range += Vector2(amount_fed / 20, amount_fed / 20)
 	_play_processing_audio(amount_fed)
 	_update_humans_fed()
+	# people being processed frightens 
+	npc_timer_range += Vector2(amount_fed / 15.0, amount_fed / 15.0)
 
 func _toggle_free_spots(has_free_spots : bool) -> void:
 	if has_free_spots:

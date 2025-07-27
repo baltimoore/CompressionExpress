@@ -1,9 +1,10 @@
-[gd_scene load_steps=20 format=3 uid="uid://c78vtc8cg3qo8"]
+[gd_scene load_steps=21 format=3 uid="uid://c78vtc8cg3qo8"]
 
 [ext_resource type="PackedScene" uid="uid://c6k5nnpbypshi" path="res://addons/maaacks_game_template/base/scenes/menus/main_menu/main_menu.tscn" id="1_rr1rn"]
 [ext_resource type="Script" uid="uid://dqwkxqvo2k8yo" path="res://scenes/menus/main_menu/main_menu_with_animations.gd" id="2_sr523"]
 [ext_resource type="PackedScene" uid="uid://boicxc6x4554n" path="res://scenes/menus/options_menu/master_options_menu_with_tabs.tscn" id="3_ixa71"]
 [ext_resource type="PackedScene" uid="uid://bg8qlntq37pp" path="res://scenes/credits/scrollable_credits.tscn" id="4_rr1rn"]
+[ext_resource type="Texture2D" uid="uid://ctfl5lq83mmic" path="res://icon.png" id="5_2k5l7"]
 [ext_resource type="AudioStream" uid="uid://b405iauxwrten" path="res://resources/audio/staple_press.wav" id="5_sr523"]
 [ext_resource type="AudioStream" uid="uid://405wbch3onfq" path="res://resources/audio/sliding-paper.wav" id="6_ixa71"]
 
@@ -367,6 +368,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Container" type="MarginContainer" parent="PanelContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="Icon" type="Sprite2D" parent="PanelContainer/Container" index="0"]
+position = Vector2(0, 160)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("5_2k5l7")
+
 [node name="UISoundController" parent="." index="1"]
 button_pressed = ExtResource("5_sr523")
 tab_selected = ExtResource("6_ixa71")
@@ -386,6 +397,9 @@ modulate = Color(1, 1, 1, 0)
 
 [node name="TitleContainer" parent="MenuContainer/TitleMargin" index="0"]
 modulate = Color(1, 1, 1, 0)
+
+[node name="TitleLabel" parent="MenuContainer/TitleMargin/TitleContainer" index="0"]
+text = "Compressed Express"
 
 [node name="SubTitleMargin" parent="MenuContainer" index="1"]
 visible = false

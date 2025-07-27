@@ -1,6 +1,7 @@
-[gd_scene load_steps=49 format=3 uid="uid://be8v4jo73y8oq"]
+[gd_scene load_steps=50 format=3 uid="uid://be8v4jo73y8oq"]
 
 [ext_resource type="PackedScene" uid="uid://bm86ek67kmyjd" path="res://assets/animated-characters-3/Model/characterMedium.fbx" id="1_0hbbm"]
+[ext_resource type="Texture2D" uid="uid://dvgt7ftrklas2" path="res://assets/animated-characters-3/Skins/hoboMaleB.png" id="2_wh4ck"]
 
 [sub_resource type="GDScript" id="GDScript_0hbbm"]
 resource_name = "npc"
@@ -28,7 +29,8 @@ func _ready() -> void:
 	$Root/Skeleton3D/characterMedium.set_surface_override_material(0, skinMaterial)
 "
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0hbbm"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j26vc"]
+albedo_texture = ExtResource("2_wh4ck")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0hbbm"]
 radius = 0.000194626
@@ -239,7 +241,7 @@ bones/40/rotation = Quaternion(0.147073, -0.00435473, -0.0215814, 0.988881)
 bones/40/scale = Vector3(1, 0.999999, 1)
 
 [node name="characterMedium" parent="Root/Skeleton3D" index="0"]
-surface_material_override/0 = SubResource("StandardMaterial3D_0hbbm")
+surface_material_override/0 = SubResource("StandardMaterial3D_j26vc")
 
 [node name="PhysicalBoneSimulator3D" type="PhysicalBoneSimulator3D" parent="Root/Skeleton3D" index="1"]
 
