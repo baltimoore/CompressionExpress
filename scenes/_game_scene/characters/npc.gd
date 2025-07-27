@@ -15,8 +15,9 @@ var last_position: Vector3 = Vector3.ZERO
 var stuck_timer := 0.0
 
 # bumping variables
-var last_push_time := 0.0
 const PUSH_COOLDOWN := 0.1
+var last_push_time := 0.0
+var push_velocity := Vector3.ZERO
 
 # dragging variables
 var is_dragged := false
@@ -29,19 +30,22 @@ func _physics_process(delta):
 	# While being dragged, don't move automatically
 	if is_dragged:
 		velocity = Vector3.ZERO
-		pass
+		
 	# Just spawned, moving along the path
 	elif path_follow && not path_follow.progress == 100:
 		_move_along_path(delta)
+	
 	# Entered waiting area, now going to waiting spot
 	elif path_follow == null && location_vector != Vector3.ZERO:
 		_move_to_location(delta)
 	
+	# Push logic: apply push velocity for PUSH_COOLDOWN seconds
+	elif last_push_time > 0.0:
+		velocity = push_velocity
+		last_push_time -= delta
+	
 	move_and_slide()
 	velocity = Vector3.ZERO
-	
-	# NPC has finalized their position; time to be shuffled around
-	last_push_time = max(0.0, last_push_time - delta)
 	
 	# Clamp position so NPC stays inside waiting area
 	if bounding_box:
@@ -116,15 +120,17 @@ func _bind_position_within_bounding_box() -> Vector3:
 #### ### ### ### ### ### ###
 ##  NPC shoving logic
 #### ### ### ### ### ### ###
+
 func _on_personal_space_body_entered(body):
-	if body != self and body is CharacterBody3D and last_push_time <= 0:
+	if body != self and body is CharacterBody3D and last_push_time <= 0.0:
 		var push_dir = (global_position - body.global_position).normalized()
-		velocity = push_dir * speed * 1.5
+		push_velocity = push_dir * speed * 1.5
 		last_push_time = PUSH_COOLDOWN
 
 #### ### ### ### ### ### ###
 ##  NPC draggability functions
 #### ### ### ### ### ### ###
+
 func start_drag():
 	is_dragged = true
 	velocity = Vector3.ZERO

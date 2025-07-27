@@ -4,15 +4,15 @@
 [ext_resource type="PackedScene" uid="uid://be8v4jo73y8oq" path="res://assets/animated-characters-3/Model/body.tscn" id="2_86e34"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_86e34"]
-radius = 0.7
+radius = 0.6
 height = 4.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_b7j6f"]
-radius = 1.25
+radius = 1.0
 height = 5.0
 
 [node name="NPC" type="CharacterBody3D"]
-collision_layer = 2
+collision_layer = 3
 script = ExtResource("1_86e34")
 
 [node name="body" parent="." instance=ExtResource("2_86e34")]
