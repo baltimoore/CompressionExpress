@@ -10,7 +10,7 @@
 script = ExtResource("2_bn2s3")
 
 [node name="TabContainer" parent="." index="0"]
-current_tab = 1
+current_tab = 2
 
 [node name="Audio" parent="TabContainer" index="1" instance=ExtResource("5_n2uhm")]
 visible = false
@@ -18,10 +18,10 @@ layout_mode = 2
 metadata/_tab_index = 0
 
 [node name="Video" parent="TabContainer" index="2" instance=ExtResource("6_eys63")]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="Game" parent="TabContainer" index="3" instance=ExtResource("7_pvnud")]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 2
