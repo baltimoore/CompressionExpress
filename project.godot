@@ -13,6 +13,8 @@ config_version=5
 config/name="Compression Express"
 run/main_scene="res://scenes/opening/opening_with_logo.tscn"
 config/features=PackedStringArray("4.4")
+boot_splash/bg_color=Color(0.909804, 0.909804, 0.909804, 1)
+boot_splash/show_image=false
 config/icon="res://icon.png"
 
 [autoload]
@@ -68,4 +70,5 @@ common/enable_pause_aware_picking=true
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(0.909804, 0.909804, 0.909804, 1)
 environment/defaults/default_environment="res://default_env.tres"

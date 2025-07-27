@@ -1,4 +1,25 @@
-[gd_resource type="Theme" load_steps=30 format=3 uid="uid://chb8n2mtmg5wy"]
+[gd_resource type="Theme" load_steps=33 format=3 uid="uid://chb8n2mtmg5wy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fajua"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q6mof"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q6mof"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.91, 0.91, 0.91, 1)
+border_width_left = 2
+border_width_top = 1
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_bottom = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kdjgt"]
 content_margin_left = 40.0
@@ -245,6 +266,13 @@ corner_radius_bottom_left = 4
 expand_margin_bottom = 1.0
 
 [resource]
+AcceptDialog/constants/resize_margin = 0
+AcceptDialog/constants/title_height = 0
+AcceptDialog/icons/close = null
+AcceptDialog/icons/close_pressed = null
+AcceptDialog/styles/embedded_border = SubResource("StyleBoxEmpty_fajua")
+AcceptDialog/styles/embedded_unfocused_border = SubResource("StyleBoxEmpty_q6mof")
+AcceptDialog/styles/panel = SubResource("StyleBoxFlat_q6mof")
 BoxContainer/constants/separation = 16
 Button/colors/font_color = Color(0, 0, 0, 1)
 Button/colors/font_disabled_color = Color(0, 0, 0, 0.501961)
