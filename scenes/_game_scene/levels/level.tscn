@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dvjrq66v54urr"]
+[gd_scene load_steps=11 format=3 uid="uid://dvjrq66v54urr"]
 
 [ext_resource type="Script" uid="uid://doppr7dq0lko8" path="res://scenes/_game_scene/levels/level.gd" id="1_0jr6r"]
 [ext_resource type="PackedScene" uid="uid://byv5mepgohgtm" path="res://assets/train-station-godot/trainstation.tscn" id="2_17rba"]
@@ -26,6 +26,13 @@ _data = {
 "tilts": PackedFloat32Array(0, 0, 0)
 }
 point_count = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0jr6r"]
+content_margin_left = 6.0
+content_margin_top = 12.0
+content_margin_right = 6.0
+content_margin_bottom = 12.0
+bg_color = Color(0.909804, 0.909804, 0.909804, 1)
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_0jr6r")
@@ -115,12 +122,19 @@ text = "despawn traincar"
 
 [node name="GameplayUI" type="CanvasLayer" parent="."]
 
-[node name="HumansFed" type="Label" parent="GameplayUI"]
-offset_left = 28.0
-offset_top = 665.0
-offset_right = 68.0
-offset_bottom = 688.0
+[node name="PanelContainer" type="PanelContainer" parent="GameplayUI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -63.0
+offset_right = 250.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0jr6r")
+
+[node name="HumansFed" type="Label" parent="GameplayUI/PanelContainer"]
+layout_mode = 2
 theme_type_variation = &"HeaderLarge"
+text = "Humans fed: "
 
 [connection signal="timeout" from="Timers/NpcTimer" to="." method="_on_npc_timer_timeout"]
 [connection signal="timeout" from="Timers/TrainTimer" to="." method="_on_train_timer_timeout"]

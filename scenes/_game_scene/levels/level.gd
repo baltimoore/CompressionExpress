@@ -106,4 +106,4 @@ func _on_despawn_traincar_pressed() -> void:
 
 func _update_humans_fed():
 	print("updating label")
-	$GameplayUI/HumansFed.text = "Humans fed: %d" % level_state.npcs_fed_amount
+	$GameplayUI/PanelContainer/HumansFed.text = "Humans fed: %d" % level_state.npcs_fed_amount
