@@ -10,6 +10,7 @@ export_credentials.cfg
 # Export folders
 exports/*
 !exports/.gdignore
+!exports/butler_manager.sh
 
 # Imported translations (automatically generated from CSV files)
 *.translation
