@@ -1,7 +1,6 @@
 extends Node3D
 
 var level_state : LevelState
-const MAX_SEARCH_ATTEMPTS = 20
 
 # NPC nodes
 @onready var npc_waiting_area = $NPC/WaitingArea
@@ -9,17 +8,24 @@ const MAX_SEARCH_ATTEMPTS = 20
 @onready var npc_timer = $Timers/NpcTimer
 @onready var train_timer = $Timers/TrainTimer
 
+signal level_lost
+
+
 
 #### ### ### ### ### ### ###
 ##  GAME STATE SETUP
 #### ### ### ### ### ### ###
 
 func _ready() -> void:
+	# Gamestate load
 	level_state = GameState.get_level_state(scene_file_path)
 	$NPC.setup(level_state.npc_occupied_positions)
-
-	%Traincar.update_fed_npcs.connect(_on_train_passed)
 	_update_humans_fed()
+	# Signal connections
+	%Traincar.update_fed_npcs.connect(_on_train_passed)
+	npc_waiting_area.no_free_spots.connect(func() : _toggle_free_spots(false))
+	npc_waiting_area.has_free_spots.connect(func() : _toggle_free_spots(true))
+	# Gameplay initialization
 	_start_random_npc_timer()
 	_start_random_train_timer()
 
@@ -76,6 +82,15 @@ func _on_train_passed(amount_fed : int) -> void:
 	level_state.npc_occupied_positions = npc_waiting_area.all_occuped_positions()
 	level_state.npcs_fed_amount += amount_fed
 	_update_humans_fed()
+
+func _toggle_free_spots(has_free_spots : bool) -> void:
+	if has_free_spots:
+		level_state.overflow = 0
+		return
+	
+	level_state.overflow += 1
+	if level_state.overflow > 3:
+		level_lost.emit()
 
 
 

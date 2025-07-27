@@ -12,3 +12,32 @@ script = ExtResource("2_wvmyj")
 script = ExtResource("3_rskc1")
 button_pressed = ExtResource("4_igfpt")
 tab_selected = ExtResource("4_igfpt")
+
+[node name="MenuPanelContainer" parent="." index="2"]
+offset_left = -259.0
+offset_top = -123.5
+offset_right = 259.0
+offset_bottom = 123.5
+
+[node name="MarginContainer" parent="MenuPanelContainer" index="0"]
+size_flags_vertical = 4
+
+[node name="BoxContainer" parent="MenuPanelContainer/MarginContainer" index="0"]
+size_flags_vertical = 4
+alignment = 1
+
+[node name="TitleMargin" parent="MenuPanelContainer/MarginContainer/BoxContainer" index="0"]
+visible = true
+
+[node name="TitleLabel" parent="MenuPanelContainer/MarginContainer/BoxContainer/TitleMargin" index="0"]
+text = "You lost..."
+
+[node name="DescriptionMargin" parent="MenuPanelContainer/MarginContainer/BoxContainer" index="1"]
+size_flags_vertical = 1
+
+[node name="DescriptionLabel" parent="MenuPanelContainer/MarginContainer/BoxContainer/DescriptionMargin" index="0"]
+bbcode_enabled = false
+text = "Too many passengers
+have flooded the train platform..."
+fit_content = true
+horizontal_alignment = 1

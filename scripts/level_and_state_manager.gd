@@ -1,5 +1,7 @@
 extends LevelManager
 
+#@export var level_lost = 
+
 func set_current_level_path(value : String) -> void:
 	super.set_current_level_path(value)
 	GameState.set_current_level(value)

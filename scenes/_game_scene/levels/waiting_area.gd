@@ -28,7 +28,7 @@ func pick_random_free_spot() -> Vector3:
 
 func is_position_free(pos: Vector3) -> bool:
 	for child in all_occuped_positions():
-		if child.distance_to(pos) < 0.8: # width of NPC collision box + some space
+		if child.distance_to(pos) < 1.25: # NPC personal space radius
 			# sorry, someone is already staying there
 			return false
 	# we went through everything, and seems like nobody is standing there (yet)!
